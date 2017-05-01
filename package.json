@@ -29,7 +29,7 @@
     "scroll-behavior": "^0.9.3"
   },
   "devDependencies": {
-    "babel-loader": "^6.3.2",
+    "babel-loader": "^7.0.0",
     "babel-cli": "^6.23.0",
     "babel-core": "^6.24.0",
     "babel-eslint": "^7.2.3",
@@ -50,7 +50,7 @@
     "prettier": "^1.2.2",
     "semantic-release": "^6.3.2",
     "travis-github-status": "^1.4.0",
-    "webpack": "2.2.1"
+    "webpack": "2.4.1"
   },
   "peerDependencies": {
     "redux-first-router": "*"
