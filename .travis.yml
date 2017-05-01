@@ -3,7 +3,7 @@ node_js:
   - stable
 cache: yarn
 script:
-  - node_modules/.bin/travis-github-status lint flow jest codeclimate # git.repos.createSatus(error count 4 tool)
+  - node_modules/.bin/travis-github-status lint
 notifications:
   email: false
 after_success:

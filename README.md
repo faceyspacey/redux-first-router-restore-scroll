@@ -1,6 +1,6 @@
 # redux-first-router-restore-scroll
 
-This package provides full-on scroll restoration for [redux-first-router](https://github.com/faceyspacey/redux-first-router) through the call of a single function. It also insures hash changes work as you would expect (e.g. when you click `#links` to different section of a Github readme it automatically scrolls, and allows you to use the browser back/next buttons to move between sections you've visited). 
+This package provides full-on scroll restoration for [redux-first-router](https://github.com/faceyspacey/redux-first-router) through the call of a single function. It also insures hash changes work as you would expect (e.g. like when you click `#links` to different section of a Github readme it automatically scrolls, and allows you to use the browser back/next buttons to move between sections you've visited). 
 
 Example:
 
