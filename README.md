@@ -1,6 +1,6 @@
 # redux-first-router-restore-scroll
 
-This package provides full-on scroll restoration for [redux-first-router](https://github.com/faceyspacey/redux-first-router) through the call of a single function. It also insures hash changes work as you would expect (e.g. like when you click `#links` to different section of a Github readme it automatically scrolls, and allows you to use the browser back/next buttons to move between sections you've visited). 
+This package provides complete scroll restoration for [redux-first-router](https://github.com/faceyspacey/redux-first-router) through the call of a single function. It also insures hash changes work as you would expect (e.g. like when you click `#links` to different section of a Github readme it automatically scrolls, and allows you to use the browser back/next buttons to move between sections you've visited). 
 
 Example:
 
@@ -40,6 +40,36 @@ connectRoutes(history, routesMap, {
   })
 })
 ```
+
+## Manual Scroll Position Updates
+It's one of the core premises of `redux-first-router` that you avoid using various container components that update unnecessarily behind the scenes, and that Redux's `connect` + React's `shouldComponentUpdate` stay your primary mechanism for controlling updates. It's all too common for a lot more updates to be going on than you're aware. The browser isn't perfect and jank is a fact of life for large animation-heavy applications. 
+
+**Everything `redux-first-router` is doing is to make Redux remain as your go-to for optimizing rendering performance.**
+
+It's for this reason we avoid a `<ScrollContext />` provider component which listens and updates in response to every single `location` state change. It may just be the virtual DOM which re-renders, but cycles add up.
+
+Therefore, in some cases you may want to update the scroll position manually. So rather than provide a `<ScrollContext />` container component, we expose an API so you can update scroll position in places you likely already are listening to such updates:
+
+```js
+import React from 'react'
+
+// import `updateScroll` from the main 'redux-first-router' package:
+import { updateScroll } from 'redux-first-router'
+
+class MyComponent extends React.Component {
+  componentDidUpdate() {
+    const dispatch = this.props.dispatch
+    requestData()
+      .then(payload => dispatch({ type: 'NEW_DATA', payload })
+      .then(() = updateScroll())
+  }
+
+  render() {...}
+}
+```
+
+Note however that if you are using `redux-first-router`'s `thunk` capabilities, `updateScroll` will automatically be called for you after your promise resolves. So you may never need this.
+
 
 ## Notes
 Modern browsers like Chrome attempt to provide the default behavior, but we have found
