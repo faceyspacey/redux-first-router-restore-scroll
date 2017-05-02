@@ -46,7 +46,7 @@ It's one of the core premises of `redux-first-router` that you avoid using vario
 
 **Everything `redux-first-router` is doing is to make Redux remain as your go-to for optimizing rendering performance.**
 
-It's for this reason we avoid a `<ScrollContext />` provider component which listens and updates in response to every single `location` state change. It may just be the virtual DOM which re-renders, but cycles add up.
+It's for this reason we avoid a top level `<ScrollContext />` provider component which listens and updates in response to every single `location` state change. It may just be the virtual DOM which re-renders, but cycles add up.
 
 Therefore, in some cases you may want to update the scroll position manually. So rather than provide a `<ScrollContext />` container component, we expose an API so you can update scroll position in places you likely already are listening to such updates:
 
