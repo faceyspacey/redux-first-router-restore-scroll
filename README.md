@@ -58,7 +58,7 @@ connectRoutes(history, routesMap, {
 ```
 
 ## Manual Scroll Position Updates
-It's one of the core premises of `redux-first-router` that you avoid using various container components that update unnecessarily behind the scenes (such as the `route` component from *React Router*), and that Redux's `connect` + React's `shouldComponentUpdate` stay your primary mechanism for controlling updates. It's all too common for a lot more updates to be going on than you're aware. The browser isn't perfect and jank is a fact of life for large animation-heavy applications. 
+It's one of the core premises of `redux-first-router` that you avoid using 3rd party container components that update unnecessarily behind the scenes (such as the `route` component from *React Router*), and that Redux's `connect` + React's `shouldComponentUpdate` stay your primary mechanism/container for controlling updates. It's all too common for a lot more updates to be going on than you're aware. The browser isn't perfect and jank is a fact of life for large animation-heavy applications. By keeping your updating containers to userland Redux containers (as much as possible), you keep your app's rendering performance in your control. 
 
 **Everything `redux-first-router` is doing is to make Redux remain as your go-to for optimizing rendering performance.**
 
