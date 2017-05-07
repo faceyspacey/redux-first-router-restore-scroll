@@ -1,7 +1,7 @@
 import ScrollBehavior from 'scroll-behavior'
 import SessionStorage from './SessionStorage'
 
-export default shouldUpdateScroll => history => {
+export default ({ shouldUpdateScroll, manual }) => history => {
   const stateStorage = new SessionStorage()
 
   const behavior = new ScrollBehavior({
@@ -18,6 +18,8 @@ export default shouldUpdateScroll => history => {
     const key = history.location.key || history.location.hash || 'loadPage'
     stateStorage.setPrevKey(key)
   }
+
+  behavior.manual = manual
 
   return behavior
 }
