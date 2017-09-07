@@ -1,7 +1,7 @@
 import ScrollBehavior from 'scroll-behavior'
 import SessionStorage from './SessionStorage'
 
-export default ({ shouldUpdateScroll, manual }) => history => {
+export default ({ shouldUpdateScroll, manual } = {}) => history => {
   const stateStorage = new SessionStorage()
 
   const behavior = new ScrollBehavior({
