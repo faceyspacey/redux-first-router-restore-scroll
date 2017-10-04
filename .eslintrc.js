@@ -50,6 +50,7 @@ module.exports = {
     'no-unused-vars': 1,
     'import/no-unresolved': 1,
     'class-methods-use-this': 1,
+    'consistent-return': 1,
     semi: [2, 'never'],
     'no-console': [2, { allow: ['warn', 'error'] }],
     'jsx-quotes': [2, 'prefer-single'],
