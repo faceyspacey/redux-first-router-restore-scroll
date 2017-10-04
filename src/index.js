@@ -2,6 +2,7 @@ import ScrollBehavior from 'scroll-behavior'
 import SessionStorage from './SessionStorage'
 
 export default ({ shouldUpdateScroll, manual } = {}) => history => {
+  if (typeof window === 'undefined') return
   const stateStorage = new SessionStorage()
 
   const behavior = new ScrollBehavior({
