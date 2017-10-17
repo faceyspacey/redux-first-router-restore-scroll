@@ -57,6 +57,8 @@ connectRoutes(history, routesMap, {
 })
 ```
 
+
+
 ## Manual Scroll Position Updates
 It's one of the core premises of `redux-first-router` that you avoid using 3rd party container components that update unnecessarily behind the scenes (such as the `route` component from *React Router*), and that Redux's `connect` + React's `shouldComponentUpdate` stay your primary mechanism/container for controlling updates. It's all too common for a lot more updates to be going on than you're aware. The browser isn't perfect and jank is a fact of life for large animation-heavy applications. By keeping your updating containers to userland Redux containers (as much as possible), you keep your app's rendering performance in your control. 
 
@@ -85,6 +87,41 @@ class MyComponent extends React.Component {
 
 Note however that if you are using `redux-first-router`'s `thunk` or `chunks` options for your routes, `updateScroll` will automatically be called for you after the corresponding promises resolve. So you may never need this.
 
+
+## Custom Storage Backend
+
+To implement a custom backend storage for scroll state, pass a custom `stateStorage` object. The object should implement the methods as described by [scroll-behavior](https://github.com/taion/scroll-behavior) as well as a function called `setPrevKey` that keeps track of the previous key. See the default [sessionStorage backed example](https://github.com/faceyspacey/redux-first-router-restore-scroll/blob/master/src/SessionStorage.js).
+
+```js
+import restoreScroll from 'redux-first-router-restore-scroll'
+import someStorageMechanism from './someStorageMechanism'
+
+function determineKeyFromLocation(location, key) {
+  // figure out a key for your storage from location and nullable key, not a robust example
+  return `${location.key || location.hash || 'loadPage'}${key}`
+}
+
+let prevKey;
+const stateStorage = {
+  setPrevKey(key) {
+    prevKey = key;
+  },
+  read(location, key) {
+    // somewhere you have stored state
+    return someStorageMechanism.get(determineKeyFromLocation(location, key))
+  },
+  save(location, key, value) {
+    // somewhere you will store state
+    someStorageMechanism.set(determineKeyFromLocation(location, key), value)
+  }
+}
+
+connectRoutes(history, routesMap, {
+  restoreScroll: restoreScroll({
+    stateStorage
+  })
+})
+```
 
 ## Caveats
 In React 16 ("Fiber"), there is more asynchrony involved, and therefore you may need to pass the `manual` option and create a component at the top of your component tree like the following:
