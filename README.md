@@ -57,6 +57,39 @@ connectRoutes(history, routesMap, {
 })
 ```
 
+
+
+## Manual Scroll Position Updates
+It's one of the core premises of `redux-first-router` that you avoid using 3rd party container components that update unnecessarily behind the scenes (such as the `route` component from *React Router*), and that Redux's `connect` + React's `shouldComponentUpdate` stay your primary mechanism/container for controlling updates. It's all too common for a lot more updates to be going on than you're aware. The browser isn't perfect and jank is a fact of life for large animation-heavy applications. By keeping your updating containers to userland Redux containers (as much as possible), you keep your app's rendering performance in your control. 
+
+**Everything `redux-first-router` is doing is to make Redux remain as your go-to for optimizing rendering performance.**
+
+It's for this reason we avoid a top level `<ScrollContext />` provider component which listens and updates in response to every single `location` state change. It may just be the virtual DOM which re-renders, but cycles add up.
+
+Therefore, in some cases you may want to update the scroll position manually. So rather than provide a `<ScrollContext />` container component, we expose an API so you can update scroll position in places you likely already are listening to such updates:
+
+```js
+import React from 'react'
+import { updateScroll } from 'redux-first-router' // note: this is the main package
+
+class MyComponent extends React.Component {
+  componentDidUpdate() {
+    const dispatch = this.props.dispatch
+    requestData()
+      .then(payload => dispatch({ type: 'NEW_DATA', payload })
+      .then(() = updateScroll())
+  }
+
+  render() {...}
+}
+```
+> The purpose of calling `updateScroll` after the new data is here and rendered is so that the page can be scrolled down to a portion of the page that might not have existed yet (e.g. because a spinner was showing instead).
+
+Note however that if you are using `redux-first-router`'s `thunk` or `chunks` options for your routes, `updateScroll` will automatically be called for you after the corresponding promises resolve. So you may never need this.
+
+
+## Custom Storage Backend
+
 To implement a custom backend storage for scroll state, pass a custom `stateStorage` object. The object should implement the methods as described by [scroll-behavior](https://github.com/taion/scroll-behavior) as well as a function called `setPrevKey` that keeps track of the previous key. See the default [sessionStorage backed example](https://github.com/faceyspacey/redux-first-router-restore-scroll/blob/master/src/SessionStorage.js).
 
 ```js
@@ -89,35 +122,6 @@ connectRoutes(history, routesMap, {
   })
 })
 ```
-
-## Manual Scroll Position Updates
-It's one of the core premises of `redux-first-router` that you avoid using 3rd party container components that update unnecessarily behind the scenes (such as the `route` component from *React Router*), and that Redux's `connect` + React's `shouldComponentUpdate` stay your primary mechanism/container for controlling updates. It's all too common for a lot more updates to be going on than you're aware. The browser isn't perfect and jank is a fact of life for large animation-heavy applications. By keeping your updating containers to userland Redux containers (as much as possible), you keep your app's rendering performance in your control. 
-
-**Everything `redux-first-router` is doing is to make Redux remain as your go-to for optimizing rendering performance.**
-
-It's for this reason we avoid a top level `<ScrollContext />` provider component which listens and updates in response to every single `location` state change. It may just be the virtual DOM which re-renders, but cycles add up.
-
-Therefore, in some cases you may want to update the scroll position manually. So rather than provide a `<ScrollContext />` container component, we expose an API so you can update scroll position in places you likely already are listening to such updates:
-
-```js
-import React from 'react'
-import { updateScroll } from 'redux-first-router' // note: this is the main package
-
-class MyComponent extends React.Component {
-  componentDidUpdate() {
-    const dispatch = this.props.dispatch
-    requestData()
-      .then(payload => dispatch({ type: 'NEW_DATA', payload })
-      .then(() = updateScroll())
-  }
-
-  render() {...}
-}
-```
-> The purpose of calling `updateScroll` after the new data is here and rendered is so that the page can be scrolled down to a portion of the page that might not have existed yet (e.g. because a spinner was showing instead).
-
-Note however that if you are using `redux-first-router`'s `thunk` or `chunks` options for your routes, `updateScroll` will automatically be called for you after the corresponding promises resolve. So you may never need this.
-
 
 ## Caveats
 In React 16 ("Fiber"), there is more asynchrony involved, and therefore you may need to pass the `manual` option and create a component at the top of your component tree like the following:

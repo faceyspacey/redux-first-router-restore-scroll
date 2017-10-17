@@ -11,7 +11,7 @@
     "lint": "eslint --fix ./",
     "format": "prettier --single-quote --semi=false --write '{src,__tests__,__test-helpers__}/**/*.js' && npm run lint",
     "precommit": "lint-staged --verbose && npm test",
-    "commit": "git-cz",
+    "cm": "git-cz",
     "semantic-release": "semantic-release pre && npm publish && semantic-release post",
     "prepublish": "npm run build && npm run build:umd && npm run build:umd:min"
   },
@@ -29,10 +29,10 @@
     "scroll-behavior": "^0.9.3"
   },
   "devDependencies": {
-    "babel-loader": "^7.0.0",
     "babel-cli": "^6.23.0",
     "babel-core": "^6.24.0",
     "babel-eslint": "^7.2.3",
+    "babel-loader": "^7.0.0",
     "babel-preset-es2015": "^6.24.1",
     "babel-preset-react": "^6.24.1",
     "babel-preset-stage-0": "^6.24.1",
@@ -49,7 +49,7 @@
     "lint-staged": "^3.4.0",
     "prettier": "^1.2.2",
     "semantic-release": "^6.3.2",
-    "travis-github-status": "^1.4.0",
+    "travis-github-status": "^1.6.3",
     "webpack": "2.4.1"
   },
   "peerDependencies": {
