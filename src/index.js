@@ -1,13 +1,14 @@
 import ScrollBehavior from 'scroll-behavior'
 import SessionStorage from './SessionStorage'
 
-export default ({ shouldUpdateScroll, manual } = {}) => history => {
+export default (
+  { shouldUpdateScroll, manual, stateStorage } = {}
+) => history => {
   if (typeof window === 'undefined') return
-  const stateStorage = new SessionStorage()
 
   const behavior = new ScrollBehavior({
     addTransitionHook: history.listen,
-    stateStorage,
+    stateStorage: stateStorage || new SessionStorage(),
     getCurrentLocation: () => ({
       ...history.location,
       action: history.action
