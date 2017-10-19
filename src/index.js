@@ -6,9 +6,10 @@ export default (
 ) => history => {
   if (typeof window === 'undefined') return
 
+  const behaviorStateStorage = stateStorage || new SessionStorage()
   const behavior = new ScrollBehavior({
     addTransitionHook: history.listen,
-    stateStorage: stateStorage || new SessionStorage(),
+    stateStorage: behaviorStateStorage,
     getCurrentLocation: () => ({
       ...history.location,
       action: history.action
@@ -18,7 +19,7 @@ export default (
 
   behavior.setPrevKey = () => {
     const key = history.location.key || history.location.hash || 'loadPage'
-    stateStorage.setPrevKey(key)
+    behaviorStateStorage.setPrevKey(key)
   }
 
   behavior.manual = manual
