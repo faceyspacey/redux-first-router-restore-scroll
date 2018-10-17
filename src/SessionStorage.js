@@ -9,8 +9,13 @@ export default class SessionStorage {
 
   read(location, key) {
     const stateKey = this.getStateKey(location, key)
-    const value = sessionStorage.getItem(stateKey)
-    return JSON.parse(value)
+    try {
+      const value = sessionStorage.getItem(stateKey)
+      return JSON.parse(value)
+    }
+    catch (e) {
+      console.warn(e)
+    }
   }
 
   save(location, key, value) {
@@ -20,7 +25,13 @@ export default class SessionStorage {
 
     const stateKey = this.getStateKey(location, key)
     const storedValue = JSON.stringify(value)
-    sessionStorage.setItem(stateKey, storedValue)
+
+    try {
+      sessionStorage.setItem(stateKey, storedValue)
+    }
+    catch (e) {
+      console.warn(e)
+    }
 
     if (key) {
       const newKey = location.key || location.hash || 'loadPage'
